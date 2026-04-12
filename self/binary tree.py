@@ -69,3 +69,83 @@ x= SearchTree("y")
 print(x)
 
 
+
+
+
+
+# Tree by record data type
+
+class Tree :
+
+    def __init__(self):
+        self.LeftPtr = -1
+        self.Data = ""
+        self.RightPtr = -1
+
+# DECLARE BinaryTree : ARRAY [0:9] [0:2] OF Tree
+# DECLARE RootPtr : INTEGER
+# DECLARE FreePtr : INTEGER
+
+BinaryTree = [Tree() for index in range(10)]
+for index in range(9) :
+    BinaryTree[index].RightPtr = index + 1
+BinaryTree[9].RightPtr = -1
+
+RootPtr = -1
+FreePtr = 0
+
+def SearchTree (item) :
+    global RootPtr , FreePtr , BinaryTree
+    CurrentPtr = RootPtr
+    while CurrentPtr != -1 :
+        if BinaryTree[CurrentPtr].Data == item :
+            return CurrentPtr
+        elif BinaryTree[CurrentPtr].Data < item :
+            CurrentPtr = BinaryTree[CurrentPtr].RightPtr
+        else :
+            CurrentPtr = BinaryTree[CurrentPtr].LeftPtr
+    return False
+
+def insert(item) :
+    global RootPtr , FreePtr , BinaryTree
+    if FreePtr == -1 :
+        return False
+    else :
+        Temp = FreePtr
+        FreePtr = BinaryTree[FreePtr].RightPtr
+        BinaryTree[Temp].Data = item
+        BinaryTree[Temp].LeftPtr = -1
+        BinaryTree[Temp].RightPtr = -1
+        if RootPtr == -1 :
+            RootPtr = Temp
+        else :
+            CurrentPtr = RootPtr
+            while CurrentPtr != -1 :
+                PreviousPtr = CurrentPtr
+                if BinaryTree[CurrentPtr].Data < item :
+                    Flag = True
+                    CurrentPtr = BinaryTree[CurrentPtr].RightPtr
+                else :
+                    Flag = False   
+                    CurrentPtr = BinaryTree[CurrentPtr].LeftPtr
+            if Flag == True :
+                BinaryTree[PreviousPtr].RightPtr = Temp
+            else :
+                BinaryTree[PreviousPtr].LeftPtr = Temp                 
+
+
+insert("m")
+insert("r")
+insert("b")
+insert("f")
+insert("a")
+insert("x")
+insert("y")
+insert("p")
+for index in range(10) :
+    print(BinaryTree[index].LeftPtr , BinaryTree[index].Data ,BinaryTree[index].RightPtr )
+
+print(RootPtr)
+print(FreePtr)
+x= SearchTree("y")
+print(x)
